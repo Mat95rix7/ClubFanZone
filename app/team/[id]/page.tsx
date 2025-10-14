@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { Team, Match, Player, getTeamInfo, getLastMatches, getNextMatches, getTeamPlayers } from "../../../lib/api"
-import MatchCard from "../../../components/MatchCard"
 import PlayerCard from "../../../components/PlayerCard"
 import MatchList from "@/components/MatchList"
+import { useTeamStore } from "@/store/useTeamStore"
 
 export default function TeamPage() {
   const params = useParams()
@@ -19,6 +19,7 @@ export default function TeamPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [tab, setTab] = useState<"info" | "last" | "next" | "players">("info")
+  const clearTeam = useTeamStore((state) => state.clearTeam)
 
   useEffect(() => {
   const fetchData = async () => {
@@ -118,20 +119,21 @@ export default function TeamPage() {
         {/* Back button */}
         <button
           onClick={() => router.push("/")}
-          //  onClick={() => {
-          //     setTeamInfo(null)
-          //     setPlayers([])
-          //     setLastMatches([])
-          //     setNextMatches([])
-          //     setTab("info")
-          //     router.push("/")
-          //   }}
           className="group mb-6 flex items-center gap-2 px-4 py-2 bg-slate-800/50 hover:bg-slate-800/80 backdrop-blur-sm rounded-xl border border-slate-700/50 hover:border-indigo-500/50 transition-all duration-300"
         >
           <svg className="w-5 h-5 text-slate-400 group-hover:text-indigo-400 group-hover:-translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
           <span className="text-slate-300 group-hover:text-white transition-colors">Retour</span>
+        </button>
+        <button
+          onClick={() => {
+            clearTeam()
+            router.push("/")
+          }}
+          className="group flex items-center gap-2 px-4 py-2 bg-red-600/50 hover:bg-red-600/80 text-white rounded-xl border border-red-500/50 transition-all duration-300"
+        >
+          Effacer l'équipe
         </button>
 
         {/* Team header */}
