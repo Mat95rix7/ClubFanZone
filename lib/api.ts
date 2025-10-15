@@ -14,22 +14,37 @@ async function fetchJson<T = any>(url: string, opts?: RequestInit): Promise<T> {
 
   return (await res.json()) as T
 }
-
-/**
- * Récupère la liste des compétitions via ton backend
- * Backend endpoint attendu : GET /api/competitions
- */
+// Recupère les compétitions
 export const getCompetitions = async (): Promise<Competition[]> => {
   return fetchJson<Competition[]>('/api/competitions')
 }
 
-/**
- * Récupère les équipes d'une compétition via ton backend
- * Backend endpoint attendu : GET /api/teams/[competitionId]
- */
+// Récupère les équipes d'une compétition
 export const getTeams = async (competitionId: number): Promise<Team[]> => {
   return fetchJson<Team[]>(`/api/teams/${competitionId}`)
 }
+
+/**
+ * Récupère TOUTES les données d'une équipe en une seule requête
+ * Backend endpoint : GET /api/teams/[teamId]/full
+ * 
+ * Retourne : {
+ *   team: Team,
+ *   lastMatches: Match[],
+ *   nextMatches: Match[],
+ *   players: Player[]
+ * }
+ */
+export const getTeamFullData = async (teamId: number) => {
+  return fetchJson<{
+    team: Team
+    lastMatches: Match[]
+    nextMatches: Match[]
+    players: any[]
+  }>(`/api/teams/info/${teamId}`)
+  // (`/api/teams/${teamId}/full`)
+}
+
 
 /**
  * Récupère les derniers matchs d'une équipe via ton backend

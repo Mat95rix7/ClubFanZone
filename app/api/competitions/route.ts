@@ -10,10 +10,11 @@ export async function GET(req: NextRequest) {
     const res = await axios.get(`${BASE_URL}/competitions?plan=TIER_ONE`, {
       headers: { 'X-Auth-Token': API_KEY ?? '' },
     })
+    // Filtrer pour ne garder que les compétitions de type "TIER_ONE"
     const competitions = res.data.competitions?.filter(
       (c: any) => c.plan === "TIER_ONE"
     )
-    console.log(res.data.count)
+
     return NextResponse.json(competitions)
   } catch (err: any) {
     console.error('Erreur récupération compétitions :', err.message)

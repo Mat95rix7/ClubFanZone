@@ -19,15 +19,19 @@ type TeamStore = {
   // Cache par équipe
   teamsCache: Record<number, TeamCache>
 
-  // Actions
-  setTeamCache: (teamId: number, data: Partial<TeamCache>) => void
-  getTeamCache: (teamId: number) => TeamCache | null
+  // Actions principales
+  setTeamData: (teamId: number, data: {
+    info: Team
+    lastMatches: Match[]
+    nextMatches: Match[]
+    players: Player[]
+  }) => void
+  
+  getTeamData: (teamId: number) => TeamCache | null
   isCacheValid: (teamId: number, maxAge?: number) => boolean
 
   // Nettoyage
   clearCache: () => void
-  clearTeamCache: (teamId: number) => void
-  clearCurrentTeam: () => void // 🔹 ajoutée ici
 }
 
 const CACHE_MAX_AGE = 5 * 60 * 1000 // 5 minutes
@@ -40,47 +44,39 @@ export const useTeamStore = create<TeamStore>()(
 
       setTeamId: (id: number) => set({ teamId: id }),
 
-      setTeamCache: (teamId: number, data: Partial<TeamCache>) => {
+      // Stocker toutes les données d'équipe en une fois
+      setTeamData: (teamId: number, data: {
+        info: Team
+        lastMatches: Match[]
+        nextMatches: Match[]
+        players: Player[]
+      }) => {
         set((state) => ({
           teamsCache: {
             ...state.teamsCache,
             [teamId]: {
-              info: data.info ?? state.teamsCache[teamId]?.info ?? null,
-              lastMatches: data.lastMatches ?? state.teamsCache[teamId]?.lastMatches ?? [],
-              nextMatches: data.nextMatches ?? state.teamsCache[teamId]?.nextMatches ?? [],
-              players: data.players ?? state.teamsCache[teamId]?.players ?? [],
+              info: data.info,
+              lastMatches: data.lastMatches,
+              nextMatches: data.nextMatches,
+              players: data.players,
               lastFetched: Date.now(),
             },
           },
         }))
       },
 
-      getTeamCache: (teamId: number) => get().teamsCache[teamId] || null,
+      // Récupérer les données d'une équipe
+      getTeamData: (teamId: number) => get().teamsCache[teamId] || null,
 
+      // Vérifier si le cache est valide
       isCacheValid: (teamId: number, maxAge: number = CACHE_MAX_AGE) => {
         const cache = get().teamsCache[teamId]
         if (!cache?.lastFetched) return false
         return Date.now() - cache.lastFetched < maxAge
       },
 
-      clearCache: () => set({ teamsCache: {} }),
-
-      clearTeamCache: (teamId: number) => {
-        set((state) => {
-          const newCache = { ...state.teamsCache }
-          delete newCache[teamId]
-          return { teamsCache: newCache }
-        })
-      },
-
-      // 🔹 Nouvelle fonction pour effacer l'équipe sélectionnée
-      clearCurrentTeam: () => {
-        const currentTeamId = get().teamId
-        if (currentTeamId) {
-          get().clearTeamCache(currentTeamId)
-        }
-        set({ teamId: null })
-      },
+      // Vider tout le cache
+      clearCache: () => set({ teamsCache: {}, teamId: null }),
     }),
     {
       name: "fanzone-team-storage",

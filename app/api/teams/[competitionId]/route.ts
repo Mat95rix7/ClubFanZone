@@ -9,7 +9,6 @@ export async function GET(
   { params }: { params: Promise<{ competitionId: string }> }
 ) {
   const { competitionId } = await params
-
   try {
     const res = await axios.get(`${BASE_URL}/competitions/${competitionId}/teams`, {
       headers: { 'X-Auth-Token': API_KEY ?? '' },

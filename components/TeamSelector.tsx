@@ -3,8 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useTeamStore } from '../store/useTeamStore'
 import { getTeams } from '../lib/api'
-
-type Team = { id: number; name: string; crest?: string }
+import { Team } from '@/types'
 
 export default function TeamSelector({ competitionId }: { competitionId: number }) {
   const [teams, setTeams] = useState<Team[]>([])
@@ -18,7 +17,6 @@ export default function TeamSelector({ competitionId }: { competitionId: number 
       try {
         const data = await getTeams(competitionId)
         setTeams(data)
-        console.log(data)
       } catch (err) {
         console.error("Erreur récupération équipes :", err)
       } finally {
