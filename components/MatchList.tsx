@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Match } from "../lib/api"
+import { Match } from "@/types"
 import MatchCard from "./MatchCard"
 
 type MatchListProps = {

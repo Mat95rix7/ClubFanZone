@@ -1,1 +1,0 @@
-{"c":["app/layout","app/page","webpack"],"r":[],"m":["(app-pages-browser)/./components/CompetitionSelector.tsx","(app-pages-browser)/./components/TeamSelector.tsx","(app-pages-browser)/./node_modules/zustand/esm/react.mjs","(app-pages-browser)/./node_modules/zustand/esm/vanilla.mjs","(app-pages-browser)/./store/useTeamStore.ts"]}

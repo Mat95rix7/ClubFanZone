@@ -1,6 +1,6 @@
 "use client"
 
-import { Match } from "../lib/api"
+import { Match } from "@/types"
 
 type MatchCardProps = {
   match: Match

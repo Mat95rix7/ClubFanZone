@@ -1,6 +1,6 @@
 "use client"
 
-import { Player } from "../lib/api"
+import { Player } from "@/types"
 
 export default function PlayerCard({ player }: { player: Player }) {
   return (
