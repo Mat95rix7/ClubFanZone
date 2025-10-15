@@ -6,7 +6,7 @@ const API_KEY = process.env.NEXT_PUBLIC_API_KEY
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE || 'https://api.football-data.org/v4'
 
 export async function GET(req: NextRequest, { params }: { params: { competitionId: string } }) {
-  const { competitionId } = await params
+  const { competitionId } = params
   try {
     const res = await axios.get(`${BASE_URL}/competitions/${competitionId}/teams`, {
       headers: { 'X-Auth-Token': API_KEY ?? '' },
