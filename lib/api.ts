@@ -1,36 +1,4 @@
-// lib/api.ts
-// Utilisé par le front : appelle ton backend Next.js (app/api/...)
-export type Competition = {
-  id: number
-  name: string
-  area?: { name: string }
-  [k: string]: any
-}
-
-export type Team = {
-  id: number
-  name: string
-  crest?: string
-  [k: string]: any
-}
-
-export type Match = {
-  id?: number
-  utcDate?: string
-  homeTeam?: { id: number; name: string }
-  awayTeam?: { id: number; name: string }
-  score?: any
-  [k: string]: any
-}
-
-export type Player = { 
-  id?: number; 
-  name: string; 
-  position?: string; 
-  nationality?: string; 
-  dateOfBirth?: string; 
-  [k: string]: any 
-}
+import { Competition, Match, Team } from '@/types'
 
 
 async function fetchJson<T = any>(url: string, opts?: RequestInit): Promise<T> {

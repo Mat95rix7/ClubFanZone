@@ -2,8 +2,6 @@
   "/api/teams/info/[teamId]/route": "app/api/teams/info/[teamId]/route.js",
   "/api/teams/matches/[teamId]/route": "app/api/teams/matches/[teamId]/route.js",
   "/api/teams/players/[teamId]/route": "app/api/teams/players/[teamId]/route.js",
-  "/api/competitions/route": "app/api/competitions/route.js",
-  "/api/teams/[competitionId]/route": "app/api/teams/[competitionId]/route.js",
   "/team/[id]/page": "app/team/[id]/page.js",
   "/page": "app/page.js"
 }
