@@ -1,12 +1,15 @@
-// app/api/teams/[competitionId]/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import axios from 'axios'
 
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE || 'https://api.football-data.org/v4'
 
-export async function GET(req: NextRequest, { params }: { params: { competitionId: string } }) {
-  const { competitionId } = params
+export async function GET(
+  req: NextRequest,
+  context: { params: { competitionId: string } }
+) {
+  const { competitionId } = context.params
+
   try {
     const res = await axios.get(`${BASE_URL}/competitions/${competitionId}/teams`, {
       headers: { 'X-Auth-Token': API_KEY ?? '' },
