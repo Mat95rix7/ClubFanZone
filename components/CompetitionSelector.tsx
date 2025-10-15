@@ -2,13 +2,8 @@
 
 import { useEffect, useState } from "react"
 import { getCompetitions } from "../lib/api"
+import { Competition } from "@/types"
 
-type Competition = {
-  id: number
-  name: string
-  emblem?: string
-  area?: { name?: string; flag?: string }
-}
 
 type Props = {
   onSelect: (competitionId: number) => void
