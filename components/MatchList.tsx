@@ -12,7 +12,8 @@ export default function MatchList({ matches, teamId }: MatchListProps) {
 
   // Extraire les compétitions uniques
   const competitions = Array.from(
-    new Set(matches.map((m) => m.competition?.name).filter(Boolean))
+    // new Set(matches.map((m) => m.competition?.name).filter(Boolean))
+    new Set(matches.map((m) => m.competition?.name).filter((name): name is string => Boolean(name)))
   )
 
   // Filtrer selon la compétition sélectionnée
