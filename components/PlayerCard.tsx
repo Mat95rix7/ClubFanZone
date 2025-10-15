@@ -1,6 +1,6 @@
 import React from 'react'
 import { Player } from "@/types"
-import { countryCodeMap } from '@/lib/CountryCodeMap'
+import { countryCodeMap } from '@/lib/countrycodemap'
 
 
 const FlagIcon = ({ nationality }: { nationality: string }) => {
