@@ -35,11 +35,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/api/competitions/route.js"
-    ],
-    "/api/teams/[competitionId]/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/teams/[competitionId]/route.js"
     ]
   }
 }
