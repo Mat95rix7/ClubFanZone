@@ -5,8 +5,11 @@ import axios from 'axios'
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE || 'https://api.football-data.org/v4'
 
-export async function GET(req: NextRequest, { params }: { params: { teamId: string } }) {
-  const { teamId } = params
+export async function GET(
+  req: NextRequest, 
+  { params }: { params: Promise<{ teamId: string }> }
+) {
+  const { teamId } = await params
   const type = req.nextUrl.searchParams.get('type')
   const season = req.nextUrl.searchParams.get('season')
   const status = type === 'next' ? 'SCHEDULED' : 'FINISHED'
