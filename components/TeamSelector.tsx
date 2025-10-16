@@ -5,7 +5,12 @@ import { useTeamStore } from '../store/useTeamStore'
 import { getTeams } from '../lib/api'
 import { Team } from '@/types'
 
-export default function TeamSelector({ competitionId }: { competitionId: number }) {
+interface TeamSelectorProps {
+  competitionId: number
+  onSelect?: (teamId: number) => void  // Ajout du prop onSelect (optionnel)
+}
+
+export default function TeamSelector({ competitionId, onSelect }: TeamSelectorProps) {
   const [teams, setTeams] = useState<Team[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
@@ -29,6 +34,14 @@ export default function TeamSelector({ competitionId }: { competitionId: number 
   const filteredTeams = teams.filter((t) =>
     t.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
+
+  // Fonction pour gérer la sélection d'une équipe
+  const handleTeamSelect = (teamId: number) => {
+    setTeamId(teamId) 
+    if (onSelect) {
+      onSelect(teamId) 
+    }
+  }
 
   if (loading) {
     return (
@@ -101,7 +114,7 @@ export default function TeamSelector({ competitionId }: { competitionId: number 
         {filteredTeams.map((t, idx) => (
           <button
             key={t.id}
-            onClick={() => setTeamId(t.id)}
+            onClick={() => handleTeamSelect(t.id)}  // ← Utilise la nouvelle fonction
             className="group relative flex items-center gap-4 p-4 bg-slate-800/40 backdrop-blur-sm rounded-2xl border border-slate-700/50 hover:border-indigo-500/50 hover:bg-slate-800/60 transition-all duration-300 overflow-hidden text-left"
             style={{
               animation: `fadeInUp 0.4s ease-out ${idx * 0.05}s both`

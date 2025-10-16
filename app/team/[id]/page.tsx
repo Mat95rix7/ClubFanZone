@@ -6,6 +6,7 @@ import { getTeamFullData } from "@/lib/api"
 import MatchList from "../../../components/MatchList"
 import { GroupedPlayersList } from "../../../components/PlayerCard"
 import { useTeamStore } from "../../../store/useTeamStore"
+import { calculateAge, FlagIcon } from "@/lib/utils"
 
 export default function TeamPage() {
   const params = useParams()
@@ -255,9 +256,18 @@ export default function TeamPage() {
                       <h3 className="text-xl font-bold text-white">Entraîneur</h3>
                     </div>
                     <p className="text-2xl font-bold text-indigo-300 mb-2">{teamInfo.coach.name}</p>
-                    {teamInfo.coach.nationality && <p className="text-slate-400 mb-1">🌍 {teamInfo.coach.nationality}</p>}
+                    {teamInfo.coach.nationality && 
+                      <div className="flex items-center gap-2">
+                        <FlagIcon nationality={teamInfo.coach.nationality} />
+                          <span className="text-slate-400 truncate">{teamInfo.coach.nationality}</span>
+                      </div>
+                    }
+
                     {teamInfo.coach.dateOfBirth && (
-                      <p className="text-slate-400 mb-1">📅 {new Date(teamInfo.coach.dateOfBirth).toLocaleDateString("fr-FR")}</p>
+                      <p className="text-slate-400 mb-1 mt-2">
+                        📅 {new Date(teamInfo.coach.dateOfBirth).toLocaleDateString("fr-FR")}
+                        {`  ( ${calculateAge(teamInfo.coach.dateOfBirth)} ans )`}
+                        </p>
                     )}
                     {teamInfo.coach.contract?.start && teamInfo.coach.contract?.until && (
                       <div className="mt-3 pt-3 border-t border-slate-700/50">

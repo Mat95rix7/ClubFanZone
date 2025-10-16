@@ -1,70 +1,11 @@
 import React from 'react'
 import { Player } from "@/types"
-import { countryCodeMap } from '@/lib/countrycodemap'
-
-
-const FlagIcon = ({ nationality }: { nationality: string }) => {
-  const code = countryCodeMap[nationality]
-  if (!code) {
-    return <span className="text-lg">🌍</span>
-  }
-  
-  return (
-    <img 
-      src={`https://flagcdn.com/24x18/${code}.png`}
-      srcSet={`https://flagcdn.com/48x36/${code}.png 2x, https://flagcdn.com/72x54/${code}.png 3x`}
-      width="24"
-      height="18"
-      alt={nationality}
-      className="rounded shadow-sm"
-    />
-  )
-}
-
-// === Calcul âge ===
-const calculateAge = (dateOfBirth: string): number => {
-  const birthDate = new Date(dateOfBirth)
-  const today = new Date()
-  let age = today.getFullYear() - birthDate.getFullYear()
-  const monthDiff = today.getMonth() - birthDate.getMonth()
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) age--
-  return age
-}
-
-// === Couleur par poste ===
-const getPositionColor = (position: string): string => {
-  if (!position) return 'from-slate-600 to-slate-700'
-  const pos = position.toLowerCase()
-  if (pos.includes('goal')) return 'from-yellow-600 to-amber-600'
-  if (pos.includes('back') || pos.includes('defence')) return 'from-blue-600 to-indigo-600'
-  if (pos.includes('midfield')) return 'from-green-600 to-emerald-600'
-  if (pos.includes('forward') || pos.includes('winger') || pos.includes('offence')) return 'from-red-600 to-rose-600'
-  return 'from-slate-600 to-slate-700'
-}
-
-// === Catégorie de poste ===
-export const getPositionCategory = (position: string): string => {
-  if (!position) return 'Autres'
-  const pos = position.toLowerCase()
-  if (pos.includes('goal')) return 'Gardiens'
-  if (pos.includes('back') || pos.includes('defence')) return 'Défenseurs'
-  if (pos.includes('midfield')) return 'Milieux'
-  if (pos.includes('forward') || pos.includes('winger') || pos.includes('offence')) return 'Attaquants'
-  return 'Autres'
-}
-
-// === Priorité pour trier ===
-export const getPositionPriority = (position: string): number => {
-  const category = getPositionCategory(position)
-  const priorities: Record<string, number> = {
-    'Gardiens': 1,
-    'Défenseurs': 2,
-    'Milieux': 3,
-    'Attaquants': 4,
-    'Autres': 99
-  }
-  return priorities[category] || 99
-}
+import { 
+  FlagIcon, 
+  calculateAge, 
+  getPositionCategory,
+  getPositionColor, 
+} from '@/lib/utils'
 
 // === Composant PlayerCard (EXPORT PAR DÉFAUT) ===
 export default function PlayerCard({ player }: { player: Player }) {
@@ -75,7 +16,7 @@ export default function PlayerCard({ player }: { player: Player }) {
     <div className="group relative">
       <div className={`absolute -inset-0.5 bg-gradient-to-r ${positionColor} rounded-2xl opacity-0 group-hover:opacity-20 blur transition duration-300`}></div>
 
-      <div className="relative bg-slate-900/80 backdrop-blur-sm rounded-2xl p-4 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-300 hover:transform hover:scale-105 h-full flex flex-col">
+      <div className="relative bg-slate-900/80 backdrop-blur-sm rounded-2xl p-2 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-300 hover:transform hover:scale-105 h-full flex flex-col">
 
         <h3 className="font-bold text-white text-center mb-2 line-clamp-2 min-h-[3rem] flex items-center justify-center">
           {player.name || 'Joueur inconnu'}
@@ -156,7 +97,7 @@ export function GroupedPlayersList({ players }: { players: Player[] }) {
             <span className="text-slate-500 text-sm">({groupedPlayers[category].length})</span>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {groupedPlayers[category].map((player, index) => (
               <PlayerCard key={index} player={player} />
             ))}
