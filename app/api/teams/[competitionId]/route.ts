@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import axios from 'axios'
 
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY
+const API_KEY = process.env.API_KEY
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE || 'https://api.football-data.org/v4'
 
 export async function GET(
