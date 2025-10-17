@@ -1,4 +1,4 @@
-import { Competition, Match, Team } from '@/types'
+import { Competition, CompetitionStandings, Match, Team } from '@/types'
 
 
 async function fetchJson<T = any>(url: string, opts?: RequestInit): Promise<T> {
@@ -22,6 +22,14 @@ export const getCompetitions = async (): Promise<Competition[]> => {
 // Récupère les équipes d'une compétition
 export const getTeams = async (competitionId: number): Promise<Team[]> => {
   return fetchJson<Team[]>(`/api/teams/${competitionId}`)
+}
+
+export const getCompetitionStandings = async (
+  competitionId: number
+): Promise<CompetitionStandings> => {
+  return fetchJson<CompetitionStandings>(
+    `/api/competitions/${competitionId}/standings`
+  )
 }
 
 /**
