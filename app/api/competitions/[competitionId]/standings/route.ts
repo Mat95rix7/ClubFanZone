@@ -5,9 +5,9 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_BASE || 'https://api.football-data.
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ competitionId: string }> }
 ) {
-  const competitionId = params.id
+  const { competitionId } = await params
 
   if (!API_KEY) {
     return NextResponse.json(
