@@ -76,6 +76,7 @@ export type Player = {
   position?: string
   nationality?: string
   dateOfBirth?: string
+  shirtNumber?: number | null
 }
 
 // ============================================================================
