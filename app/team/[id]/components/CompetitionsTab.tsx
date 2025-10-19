@@ -1,12 +1,13 @@
 import { CompetitionSubTab, TabConfig } from "@/types"
 import useCompetitionFilters from "../hooks/useCompetitionFilters"
 import useNextMatch from "../hooks/useNextMatch"
+import { useCurrentMatch } from "../hooks/useCurrentMatch"
 import MatchCard from "@/components/MatchCard"
 import MatchList from "@/components/MatchList"
 import TabNavigation from "./TabNavigation"
 import EmptyState from "./EmptyState"
 import StandingsTab from "./StandingsTab"
-
+import CurrentMatchCard from "./CurrentMatchCard"
 
 export default function CompetitionsTab({ 
   teamInfo, 
@@ -27,6 +28,8 @@ export default function CompetitionsTab({
   competitionTab: CompetitionSubTab
   onCompetitionTabChange: (tab: CompetitionSubTab) => void
 }) {
+  const { currentMatch } = useCurrentMatch(teamId)
+
   if (!teamInfo.runningCompetitions || teamInfo.runningCompetitions.length === 0) {
     return (
       <EmptyState
@@ -39,8 +42,15 @@ export default function CompetitionsTab({
   const { filteredLast, filteredNext } = useCompetitionFilters(selectedCompetition, lastMatches, nextMatches)
   const nextMatch = useNextMatch(lastMatches, nextMatches)
 
-  const filteredLastWithoutNext = filteredLast.filter((m) => m.id !== nextMatch?.id)
-  const filteredNextWithoutNext = filteredNext.filter((m) => m.id !== nextMatch?.id)
+  // Filtrer le match en cours et le prochain match des listes
+  const filteredLastWithoutNext = filteredLast.filter((m) => m.id !== nextMatch?.id && m.id !== currentMatch?.id)
+  const filteredNextWithoutNext = filteredNext.filter((m) => m.id !== nextMatch?.id && m.id !== currentMatch?.id)
+
+  // Vérifier si le match en cours correspond au filtre de compétition
+  const shouldShowCurrentMatch = currentMatch && (
+    selectedCompetition === "all" || 
+    currentMatch.competition.id === selectedCompetition
+  )
 
   const competitionTabs: TabConfig[] = [
     { id: "last", label: "Derniers matchs", icon: "", count: filteredLastWithoutNext.length },
@@ -90,8 +100,15 @@ export default function CompetitionsTab({
         ))}
       </div>
 
-      {/* Prochain match */}
-      {nextMatch && (
+      {/* Match en cours - affiché en priorité */}
+      {shouldShowCurrentMatch && (
+        <div className="mb-4">
+          <CurrentMatchCard match={currentMatch} teamId={teamId} />
+        </div>
+      )}
+
+      {/* Prochain match - affiché uniquement s'il n'y a pas de match en cours */}
+      {!shouldShowCurrentMatch && nextMatch && (
         <div className="mb-4">
           <h3 className="text-lg md:text-xl font-bold text-white mb-2">Prochain match</h3>
           <MatchCard match={nextMatch} teamId={teamId} />

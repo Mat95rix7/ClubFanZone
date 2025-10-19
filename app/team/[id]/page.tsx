@@ -16,7 +16,7 @@ import TabNavigation from "@/app/team/[id]/components/TabNavigation"
 import EmptyState from "@/app/team/[id]/components/EmptyState"
 import InfoTab from "@/app/team/[id]/components/InfoTab"
 
-function SquadTab({ players }: { players: any[] }) {
+function SquadTab({ players, league }: { players: any[]; league: number }) {
   if (players.length === 0) {
     return (
       <EmptyState
@@ -25,8 +25,10 @@ function SquadTab({ players }: { players: any[] }) {
       />
     )
   }
-  return <GroupedPlayersList players={players} />
+
+  return <GroupedPlayersList players={players} league={league} />
 }
+
 
 // ============================================================================
 // COMPOSANT PRINCIPAL
@@ -43,8 +45,11 @@ export default function TeamPage() {
   const [selectedCompetition, setSelectedCompetition] = useState<number | "all">("all")
   const [competitionTab, setCompetitionTab] = useState<CompetitionSubTab>("last")
 
+  const firstCompetitionId = teamInfo?.runningCompetitions?.[0]?.id
+
   useEffect(() => {
-    const firstCompetitionId = teamInfo?.runningCompetitions?.[0]?.id
+    
+    
 
     if (firstCompetitionId && !selectedCompetition) {
         setSelectedCompetition(firstCompetitionId)
@@ -81,7 +86,7 @@ export default function TeamPage() {
 
         <div className="animate-fadeIn">
           {mainTab === "info" && <InfoTab teamInfo={teamInfo} />}
-          {mainTab === "squad" && <SquadTab players={players} />}
+          {mainTab === "squad" && <SquadTab players={players} league={firstCompetitionId} />}
           {mainTab === "palmares" && (
             <EmptyState
               icon="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"

@@ -32,6 +32,30 @@ export const getCompetitionStandings = async (
   )
 }
 
+// À ajouter dans votre fichier api.ts
+
+/**
+ * Récupère le match en cours d'une équipe
+ * Backend endpoint : GET /api/teams/matches/[teamId]/current
+ */
+export const getCurrentMatch = async (teamId: number): Promise<any | null> => {
+  try {
+    const response = await fetch(`/api/teams/matches/${teamId}/current`, {
+      cache: 'no-store',
+      headers: { 'Content-Type': 'application/json' }
+    })
+    
+    if (!response.ok) {
+      return null
+    }
+    
+    return await response.json()
+  } catch (error) {
+    console.error('Erreur getCurrentMatch:', error)
+    return null
+  }
+}
+
 /**
  * Récupère TOUTES les données d'une équipe en une seule requête
  * Backend endpoint : GET /api/teams/[teamId]/full
