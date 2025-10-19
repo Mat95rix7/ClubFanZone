@@ -7,9 +7,9 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { playerId: string } }
+  { params }: { params: Promise<{ playerId: string }> }
 ) {
-  const playerId = params.playerId
+  const playerId = (await params).playerId
 
   if (!playerId) {
     return NextResponse.json(
