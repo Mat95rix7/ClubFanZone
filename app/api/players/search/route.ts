@@ -38,7 +38,6 @@ export async function GET(request: NextRequest) {
     }
 
     const data = await response.json()
-    console.log(data);
     return NextResponse.json(data)
 
   } catch (error) {
@@ -51,7 +50,7 @@ export async function GET(request: NextRequest) {
 }
 
 // mapping entre Football-Data.org et API-Football
-export const leagueIdMap: Record<number, number> = {
+const leagueIdMap: Record<number, number> = {
   2021: 39,   // Premier League
   2015: 61,   // Ligue 1
   2019: 135,  // Serie A
@@ -61,6 +60,6 @@ export const leagueIdMap: Record<number, number> = {
 }
 
 // fonction utilitaire
-export function getApiFootballLeagueId(fdId: number): number | null {
+function getApiFootballLeagueId(fdId: number): number | null {
   return leagueIdMap[fdId] || null
 }
